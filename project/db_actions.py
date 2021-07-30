@@ -8,19 +8,40 @@ class DB_actions():
         self.connection = db_conection.DB_Conector()
 
     def select_data(self, table, query_params):
-        self.connection.connect_db()
-        connection = self.connection.cursor
-        result = connection.execute(
+        connection = self.connection.create_connection()
+        result = connection.cursor().execute(
             f"SELECT * FROM {table} where capital = '{query_params}';").fetchall()
         return result
 
-    def insert_data(self, table, country):
-        self.connection.connect_db()
-        connection = self.connection.cursor
-        result = connection.execute(f"INSERT INTO {table} (name_country, capital, callingCodes, population, area, flag) \
-                    VALUES ('{country.country_name}', '{country.country_capital}', \
-                     '{country.country_calling_codes}', '{country.country_population}', \
-                     '{country.country_area}','{country.country_flag}');")
-        self.connection.connection.commit()
+    def select_all(self, table):
+        connection = self.connection.create_connection()
+        result = connection.cursor().execute(
+            f"SELECT * FROM {table};").fetchall()
         return result
-        # return connection.execute(f"INSERT INTO {table} (id_country, name_country, capital, callingCodes, population, area, flag) VALUES {data_to_insert};")
+
+    def insert_data(self, table, country):
+        connection = self.connection.create_connection()
+        index = 0
+        for values in country:
+            country_name = country[index]["name"]
+            country_capital = country[index]["capital"]
+            country_calling_codes = country[index]["callingCodes"][0]
+            country_population = country[index]["population"]
+            country_area = country[index]["area"]
+            country_flag = country[index]["flag"]
+            country_capital = country_capital.replace("'", "''")
+            country_name = country_name.replace("'", "''")
+            connection.cursor().execute(f"INSERT INTO {table} (name_country, capital, callingCodes, population, area, flag) \
+                        VALUES ('{country_name}', '{country_capital}', \
+                        '{country_calling_codes}', '{country_population}', \
+                        '{country_area}','{country_flag}');").fetchall()
+            result = connection.commit()
+            index += 1
+        return result
+
+    def delete_data(self, table, query_params):
+        connection = self.connection.create_connection()
+        connection.cursor().execute(
+            f'DELETE FROM {table} WHERE id_country = "{query_params}";').fetchall()
+        result = connection.commit()
+        return result

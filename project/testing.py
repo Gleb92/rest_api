@@ -1,17 +1,15 @@
-import seraliz
+import country_data
 import db_actions as actions
 
 db_actions = actions.DB_actions()
 
 
 def insert_db():
-    country = seraliz.contry_data()
-    country.change_data()
+    country = country_data.Contry()
+    data = country.collect_data()
+
     table = "country"
-    db_actions.insert_data(table, country)
-
-
-insert_db()
+    db_actions.insert_data(table, data)
 
 
 def get_country_by_alpha(alpha):
@@ -19,4 +17,11 @@ def get_country_by_alpha(alpha):
     db_actions.select_data(table, alpha)
 
 
-print(get_country_by_alpha('Mariehamn'))
+insert_db()
+# print(db_actions.select_all("country"))
+
+
+def delete_country():
+    table = "country"
+    name_country = "Zimbab"
+    db_actions.delete_data(table, name_country)
