@@ -1,15 +1,23 @@
 import country_data
 import db_actions as actions
 import db_actions_languages as actions1
+import request_json
 
 db_actions = actions.DB_actions()
 db_actions_lang = actions1.DB_actions()
+parser = request_json.request_api()
+
+
+def collect_data():
+    parser.get_request()
+    parser.parsed_json()
+    data = parser.json_data
+    return data
 
 
 def insert_db():
-    country = country_data.Contry()
-    data = country.collect_data()
-    table = "country"
+    data = collect_data()
+    table = "language"
     db_actions.insert_data(table, data)
 
 
@@ -18,7 +26,7 @@ def get_country_by_alpha(alpha):
     db_actions.select_data(table, alpha)
 
 
-# insert_db()
+insert_db()
 # print(db_actions.select_all("country"))
 
 
@@ -43,4 +51,4 @@ def insert_db_lang():
     db_actions_lang.insert_data(table, data)
 
 
-insert_db_lang()
+# insert_db_lang()

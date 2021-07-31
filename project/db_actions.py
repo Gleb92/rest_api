@@ -1,5 +1,6 @@
 import sqlite3
 import db_conection
+from country_data import CountryData
 
 
 class DB_actions():
@@ -19,22 +20,13 @@ class DB_actions():
             f"SELECT * FROM {table};").fetchall()
         return result
 
-    def insert_data(self, table, country):
+    def insert_data(self, table, json):
         connection = self.connection.create_connection()
+        country_data = CountryData()
         index = 0
-        for values in country:
-            country_name = country[index]["name"]
-            country_capital = country[index]["capital"]
-            country_calling_codes = country[index]["callingCodes"][0]
-            country_population = country[index]["population"]
-            country_area = country[index]["area"]
-            country_flag = country[index]["flag"]
-            country_capital = country_capital.replace("'", "''")
-            country_name = country_name.replace("'", "''")
-            connection.cursor().execute(f"INSERT INTO {table} (name_country, capital, callingCodes, population, area, flag) \
-                        VALUES ('{country_name}', '{country_capital}', \
-                        '{country_calling_codes}', '{country_population}', \
-                        '{country_area}','{country_flag}');").fetchall()
+        for values in json:
+            country_data.parse(values)
+            connection.cursor().execute(country_data.create_query_to_db(table)).fetchall()
             result = connection.commit()
             index += 1
         return result

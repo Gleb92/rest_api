@@ -15,9 +15,6 @@ class DB_actions():
             count_languages = language[index]["languages"]
             for values in count_languages:
                 country_languages = language[index]["languages"][index_name]["name"]
-                connection.cursor().execute(
-                    f"INSERT INTO {table} (languages)  VALUES ('{country_languages}');").fetchall()
-                result = connection.commit()
                 index_name += 1
             index += 1
         return result
