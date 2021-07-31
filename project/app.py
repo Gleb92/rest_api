@@ -17,7 +17,7 @@ def collect_data():
 
 def insert_db():
     data = collect_data()
-    table = "language"
+    table = "location"
     db_actions.insert_data(table, data)
 
 

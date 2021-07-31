@@ -10,8 +10,8 @@ class CountryData:
         self.country_population = int()
         self.country_area = int()
         self.country_flag = str()
-        self.country_languages = str()
-        self.values = int()
+        self.country_languages = []
+        self.region = str()
 
     def parse(self, data):
         self.country_name = str(data["name"]).replace("'", "''")
@@ -19,16 +19,20 @@ class CountryData:
             data["capital"]).replace("'", "''")
         self.country_calling_codes = data["callingCodes"][0]
         self.country_population = data["population"]
-        self.country_languages = data["languages"][self.values]["name"]
+        self.country_languages = self.parse_lang(data)
         self.country_area = data["area"]
         self.country_flag = data["flag"]
+        self.region = data["region"]
 
-    def parse_lang(self):
+    def parse_lang(self, data):
         index_name = 0
-        count_languages = self.country_languages["languages"]
+        count_languages = data["languages"]
+        country_languages = None
         for values in count_languages:
+            country_languages = data["languages"][index_name]["name"]
             index_name += 1
-        return values
+            self.country_languages = country_languages
+        return self.country_languages
 
     def create_query_to_db(self, table):
         if table == "country":
@@ -38,4 +42,6 @@ class CountryData:
                         '{self.country_area}','{self.country_flag}');"
         if table == "language":
             query = f"INSERT INTO language (languages)  VALUES ('{self.country_languages}');"
+        if table == "location":
+            query = f"INSERT INTO location (region)  VALUES ('{self.region}');"
         return query
