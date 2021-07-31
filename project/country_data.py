@@ -18,3 +18,14 @@ class Contry():
         parser.parsed_json()
         data = parser.json_data
         return data
+
+
+class languages():
+    def __init__(self):
+        self.country_languages = str()
+
+    def collect_language(self):
+        parser.get_request()
+        parser.parsed_json()
+        data = parser.json_data
+        return data

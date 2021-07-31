@@ -45,3 +45,10 @@ class DB_actions():
             f'DELETE FROM {table} WHERE id_country = "{query_params}";').fetchall()
         result = connection.commit()
         return result
+
+    def update_data(self, table, new_query_params, query_params):
+        connection = self.connection.create_connection()
+        connection.cursor().execute(
+            f'UPDATE {table} SET id_country = {new_query_params} WHERE name_country = "{query_params}";').fetchall()
+        result = connection.commit()
+        return result
