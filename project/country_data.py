@@ -26,22 +26,26 @@ class CountryData:
 
     def parse_lang(self, data):
         index_name = 0
+        self.country_languages = []
         count_languages = data["languages"]
-        country_languages = None
         for values in count_languages:
-            country_languages = data["languages"][index_name]["name"]
+            values = data["languages"][index_name]["name"]
             index_name += 1
-            self.country_languages = country_languages
+            self.country_languages += [values]
         return self.country_languages
 
     def create_query_to_db(self, table):
         if table == "country":
-            query = f"INSERT INTO country (name_country, capital, callingCodes, population, area, flag) \
+            query = f"""INSERT INTO country (name_country, capital, callingCodes, population, area, flag) \
                         VALUES ('{self.country_name}', '{self.country_capital}', \
                         '{self.country_calling_codes}', '{self.country_population}', \
-                        '{self.country_area}','{self.country_flag}');"
+                        '{self.country_area}','{self.country_flag}');"""
         if table == "language":
-            query = f"INSERT INTO language (languages)  VALUES ('{self.country_languages}');"
+            query_mas = []
+            for values in self.country_languages:
+                query_mas += [
+                    f"INSERT INTO language (languages) VALUES ('{values}');"]
+            query = ' '.join(query_mas)
         if table == "location":
-            query = f"INSERT INTO location (region)  VALUES ('{self.region}');"
+            query = f"""INSERT INTO location (region)  VALUES ('{self.region}');"""
         return query

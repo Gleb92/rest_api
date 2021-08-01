@@ -26,7 +26,7 @@ class DB_actions():
         index = 0
         for values in json:
             country_data.parse(values)
-            connection.cursor().execute(country_data.create_query_to_db(table)).fetchall()
+            connection.cursor().executescript(country_data.create_query_to_db(table)).fetchall()
             result = connection.commit()
             index += 1
         return result
