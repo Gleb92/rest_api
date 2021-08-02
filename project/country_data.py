@@ -7,7 +7,7 @@ class CountryData:
         self.id_country = 0
         self.country_name = str()
         self.country_capital = str()
-        self.country_calling_codes = int()
+        self.country_calling_codes = str()
         self.country_population = int()
         self.country_area = int()
         self.country_flag = str()
