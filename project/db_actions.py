@@ -14,10 +14,12 @@ class DB_actions():
             f"SELECT * FROM {table} where capital = '{query_params}';").fetchall()
         return result
 
-    def select_all(self, table):
+    def select_all(self, table, table2, table3):
         connection = self.connection.create_connection()
+        select_param = f"{table}.id_country, name_country, capital, callingCodes, population, area, flag, {table2}.languages, {table3}.region"
         result = connection.cursor().execute(
-            f"SELECT * FROM {table};").fetchall()
+            f"SELECT {select_param} FROM {table} INNER JOIN {table2} ON {table2}.id_country = {table}.id_country \
+                                 JOIN {table3} ON {table3}.id_country = {table2}.id_country ;").fetchall()
         return result
 
     def insert_data(self, table, json):
@@ -31,10 +33,10 @@ class DB_actions():
             index += 1
         return result
 
-    def delete_data(self, table, query_params):
+    def delete_data(self, table, colonum_table, query_params):
         connection = self.connection.create_connection()
         connection.cursor().execute(
-            f'DELETE FROM {table} WHERE id_country = "{query_params}";').fetchall()
+            f'DELETE FROM {table} WHERE {colonum_table} = "{query_params}";').fetchall()
         result = connection.commit()
         return result
 

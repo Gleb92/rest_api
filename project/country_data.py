@@ -4,6 +4,7 @@ import request_json
 
 class CountryData:
     def __init__(self):
+        self.id_country = 0
         self.country_name = str()
         self.country_capital = str()
         self.country_calling_codes = int()
@@ -14,6 +15,7 @@ class CountryData:
         self.region = str()
 
     def parse(self, data):
+        self.id_country += 1
         self.country_name = str(data["name"]).replace("'", "''")
         self.country_capital = str(
             data["capital"]).replace("'", "''")
@@ -36,16 +38,16 @@ class CountryData:
 
     def create_query_to_db(self, table):
         if table == "country":
-            query = f"""INSERT INTO country (name_country, capital, callingCodes, population, area, flag) \
-                        VALUES ('{self.country_name}', '{self.country_capital}', \
+            query = f"""INSERT INTO country (id_country, name_country, capital, callingCodes, population, area, flag) \
+                        VALUES ('{self.id_country}', '{self.country_name}', '{self.country_capital}', \
                         '{self.country_calling_codes}', '{self.country_population}', \
                         '{self.country_area}','{self.country_flag}');"""
         if table == "language":
             query_mas = []
             for values in self.country_languages:
                 query_mas += [
-                    f"INSERT INTO language (languages) VALUES ('{values}');"]
+                    f"INSERT INTO language (languages, id_country) VALUES ('{values}', '{self.id_country}');"]
             query = ' '.join(query_mas)
         if table == "location":
-            query = f"""INSERT INTO location (region)  VALUES ('{self.region}');"""
+            query = f"""INSERT INTO location (region, id_country)  VALUES ('{self.region}', '{self.id_country}');"""
         return query
