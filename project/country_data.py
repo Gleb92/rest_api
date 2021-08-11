@@ -14,6 +14,17 @@ class CountryData:
         self.country_languages = []
         self.region = str()
 
+    def serialize_db_response(self, db_response):
+        self.id_country = db_response[0][0]
+        self.country_name = db_response[0][1]
+        self.country_capital = db_response[0][2]
+        self.country_calling_codes = db_response[0][3]
+        self.country_population = db_response[0][4]
+        self.country_area = db_response[0][5]
+        self.country_flag = db_response[0][6]
+#        self.country_languages = db_response[0][7]
+#        self.region = db_response[0][8]
+
     def parse(self, data):
         self.id_country += 1
         self.country_name = str(data["name"]).replace("'", "''")
