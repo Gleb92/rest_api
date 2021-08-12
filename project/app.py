@@ -52,6 +52,10 @@ def update_date_table_country():
     db_actions.update_data(table, new_date_update, name_country)
 
 
+def select_all_info_country():
+    return db_actions.select_all_country("Afghanistan")
+
+
 def parse_db_response(db_response):
     country.serialize_db_response(db_response)
     db_response_dict = country_schema.dump(country)
@@ -59,7 +63,7 @@ def parse_db_response(db_response):
 
 
 def json_country():
-    db_data = get_country_by_alpha1()
+    db_data = select_all_info_country()
     return parse_db_response(db_data)
 
 

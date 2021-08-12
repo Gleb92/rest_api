@@ -46,3 +46,14 @@ class DB_actions():
             f'UPDATE {table} SET id_country = {new_query_params} WHERE name_country = "{query_params}";').fetchall()
         result = connection.commit()
         return result
+
+    def select_all_country(self, country_name):
+        connection = self.connection.create_connection()
+        table = "country"
+        table2 = "language"
+        table3 = "location"
+        select_param = f"{table}.id_country, name_country, capital, callingCodes, population, area, flag, {table2}.languages, {table3}.region"
+        result = connection.cursor().execute(
+            f"SELECT {select_param} FROM {table} INNER JOIN {table2} ON {table2}.id_country = {table}.id_country \
+                                 JOIN {table3} ON {table3}.id_country = {table2}.id_country WHERE {table}.name_country = '{country_name}';").fetchall()
+        return result

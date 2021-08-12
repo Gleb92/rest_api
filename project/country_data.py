@@ -22,8 +22,10 @@ class CountryData:
         self.country_population = db_response[0][4]
         self.country_area = db_response[0][5]
         self.country_flag = db_response[0][6]
-#        self.country_languages = db_response[0][7]
-#        self.region = db_response[0][8]
+        self.country_languages = self.parse_num_lang(db_response)
+        print(type(self.country_languages))
+        print(type(self.country_flag))
+        self.region = db_response[0][8]
 
     def parse(self, data):
         self.id_country += 1
@@ -43,6 +45,16 @@ class CountryData:
         count_languages = data["languages"]
         for values in count_languages:
             values = data["languages"][index_name]["name"]
+            index_name += 1
+            self.country_languages += [values]
+        return self.country_languages
+
+    def parse_num_lang(self, db_response):
+        index_name = 0
+        self.country_languages = []
+        count_languages = db_response
+        for values in count_languages:
+            values = db_response[index_name][7]
             index_name += 1
             self.country_languages += [values]
         return self.country_languages

@@ -8,5 +8,5 @@ class CountrySchema (Schema):
     country_area = fields.Str()
     country_population = fields.Int()
     country_flag = fields.Str()
-    country_language = fields.Str()
+    country_language = fields.List(fields.Str())
     region = fields.Str()
