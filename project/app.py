@@ -53,7 +53,7 @@ def update_date_table_country():
 
 
 def select_all_info_country():
-    return db_actions.select_all_country("Afghanistan")
+    return db_actions.select_all_country("Botswana")
 
 
 def parse_db_response(db_response):

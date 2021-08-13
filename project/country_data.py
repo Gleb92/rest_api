@@ -1,3 +1,4 @@
+from ntpath import join
 import requests
 import request_json
 
@@ -23,8 +24,6 @@ class CountryData:
         self.country_area = db_response[0][5]
         self.country_flag = db_response[0][6]
         self.country_languages = self.parse_num_lang(db_response)
-        print(type(self.country_languages))
-        print(type(self.country_flag))
         self.region = db_response[0][8]
 
     def parse(self, data):
