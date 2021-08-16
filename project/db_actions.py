@@ -57,3 +57,9 @@ class DB_actions():
             f"SELECT {select_param} FROM {table} INNER JOIN {table2} ON {table2}.id_country = {table}.id_country \
                                  JOIN {table3} ON {table3}.id_country = {table2}.id_country WHERE {table}.name_country = '{country_name}';").fetchall()
         return result
+
+    def select_all_country_info(self):
+        connection = self.connection.create_connection()
+        res = connection.cursor().execute(
+            f"SELECT name_country FROM country").fetchall()
+        return res

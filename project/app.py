@@ -1,8 +1,12 @@
+from os import name
 import country_data
 import db_actions as actions
 import request_json
 from country_schema import CountrySchema
+from flask import Flask, request
 
+
+app = Flask(__name__)
 db_actions = actions.DB_actions()
 parser = request_json.request_api()
 country = country_data.CountryData()
@@ -52,8 +56,8 @@ def update_date_table_country():
     db_actions.update_data(table, new_date_update, name_country)
 
 
-def select_all_info_country():
-    return db_actions.select_all_country("Botswana")
+# def select_all_info_country():
+#    return db_actions.select_all_country("Botswana")
 
 
 def parse_db_response(db_response):
@@ -62,9 +66,23 @@ def parse_db_response(db_response):
     return db_response_dict
 
 
-def json_country():
-    db_data = select_all_info_country()
-    return parse_db_response(db_data)
+@app.route('/countries')
+def index():
+    all_info = db_actions.select_all_country_info()
+    country_all_info = {}
+    for values in all_info:
+        values_country = values[0].replace("'", "''")
+        countries = db_actions.select_all_country(values_country)
+        info_all = parse_db_response(countries)
+        prost = dict.values(info_all)
+        return prost
 
 
-print(json_country())
+@app.route('/countries/<string:name>')
+def select_all_info_country(name):
+    db_data = db_actions.select_all_country(name)
+    info = parse_db_response(db_data)
+    return info
+
+
+print(index())
