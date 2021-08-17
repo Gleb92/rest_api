@@ -1,9 +1,10 @@
-from os import name
+import json
+from os import add_dll_directory, name
 import country_data
 import db_actions as actions
 import request_json
 from country_schema import CountrySchema
-from flask import Flask, request
+from flask import Flask, Request
 
 
 app = Flask(__name__)
@@ -61,21 +62,23 @@ def update_date_table_country():
 
 
 def parse_db_response(db_response):
-    country.serialize_db_response(db_response)
+    country.serialize_db_response_single_object(db_response)
     db_response_dict = country_schema.dump(country)
     return db_response_dict
 
 
-@app.route('/countries')
-def index():
-    all_info = db_actions.select_all_country_info()
-    country_all_info = {}
-    for values in all_info:
+@app.route('/countries/')
+def select_all_info():
+    all_info_countries = db_actions.select_all_country_info()
+    all_countries = []
+    response = None
+    for values in all_info_countries:
         values_country = values[0].replace("'", "''")
         countries = db_actions.select_all_country(values_country)
         info_all = parse_db_response(countries)
-        prost = dict.values(info_all)
-        return prost
+        all_countries.append(info_all)
+    response = json.dumps(all_countries)
+    return response
 
 
 @app.route('/countries/<string:name>')
@@ -83,6 +86,3 @@ def select_all_info_country(name):
     db_data = db_actions.select_all_country(name)
     info = parse_db_response(db_data)
     return info
-
-
-print(index())

@@ -15,7 +15,7 @@ class CountryData:
         self.country_languages = []
         self.region = str()
 
-    def serialize_db_response(self, db_response):
+    def serialize_db_response_single_object(self, db_response):
         self.id_country = db_response[0][0]
         self.country_name = db_response[0][1]
         self.country_capital = db_response[0][2]

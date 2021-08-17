@@ -14,8 +14,11 @@ class DB_actions():
             f"SELECT * FROM {table} where capital = '{query_params}';").fetchall()
         return result
 
-    def select_all(self, table, table2, table3):
+    def select_all(self):
         connection = self.connection.create_connection()
+        table = "country"
+        table2 = "language"
+        table3 = "location"
         select_param = f"{table}.id_country, name_country, capital, callingCodes, population, area, flag, {table2}.languages, {table3}.region"
         result = connection.cursor().execute(
             f"SELECT {select_param} FROM {table} INNER JOIN {table2} ON {table2}.id_country = {table}.id_country \
