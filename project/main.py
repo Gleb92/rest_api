@@ -1,16 +1,18 @@
-import json
-from os import add_dll_directory, name
-import country_data
-import db_actions as actions
-import request_json
-from country_schema import CountrySchema
+from os import path
+import sys
+sys.path.append('../project')
 from flask import Flask, Request
+from project.country_schema import CountrySchema
+import project.request_json
+import project.db_actions as actions
+import project.country_data
+import json
 
 
 app = Flask(__name__)
 db_actions = actions.DB_actions()
-parser = request_json.request_api()
-country = country_data.CountryData()
+parser = project.request_json.request_api()
+country = project.country_data.CountryData()
 country_schema = CountrySchema()
 
 
@@ -79,6 +81,7 @@ def select_all_info():
         all_countries.append(info_all)
     response = json.dumps(all_countries)
     return response
+
 
 
 @app.route('/countries/<string:name>')

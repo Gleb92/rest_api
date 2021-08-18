@@ -1,12 +1,15 @@
+from os import path
+import sys
+sys.path.append('../project')
 import sqlite3
-import db_conection
-from country_data import CountryData
+import project.db_conection
+from project.country_data import CountryData
 
 
 class DB_actions():
 
     def __init__(self):
-        self.connection = db_conection.DB_Conector()
+        self.connection = project.db_conection.DB_Conector()
 
     def select_data(self, table, query_params):
         connection = self.connection.create_connection()

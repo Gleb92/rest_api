@@ -1,3 +1,6 @@
+from os import path
+import sys
+sys.path.append('../project')
 from marshmallow import Schema, fields
 
 

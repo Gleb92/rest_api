@@ -1,6 +1,7 @@
-from ntpath import join
-import requests
-import request_json
+from os import path
+import sys
+sys.path.append('../project')
+
 
 
 class CountryData:
@@ -17,8 +18,8 @@ class CountryData:
 
     def serialize_db_response_single_object(self, db_response):
         self.id_country = db_response[0][0]
-        self.country_name = db_response[0][1]
-        self.country_capital = db_response[0][2]
+        self.country_name = db_response[0][1].replace("'", "''")
+        self.country_capital = db_response[0][2].replace("'", "''")
         self.country_calling_codes = db_response[0][3]
         self.country_population = db_response[0][4]
         self.country_area = db_response[0][5]
@@ -53,7 +54,7 @@ class CountryData:
         self.country_languages = []
         count_languages = db_response
         for values in count_languages:
-            values = db_response[index_name][7]
+            values = db_response[index_name][7].replace("'", "''")
             index_name += 1
             self.country_languages += [values]
         return self.country_languages
