@@ -2,17 +2,17 @@ from os import path
 import sys
 sys.path.append('../project')
 from flask import Flask, Request
-from project.country_schema import CountrySchema
-import project.request_json
-import project.db_actions as actions
-import project.country_data
+from country_schema import CountrySchema
+import request_json
+import db_actions as actions
+import country_data
 import json
 
 
 app = Flask(__name__)
 db_actions = actions.DB_actions()
-parser = project.request_json.request_api()
-country = project.country_data.CountryData()
+parser = request_json.request_api()
+country = country_data.CountryData()
 country_schema = CountrySchema()
 
 
@@ -89,3 +89,44 @@ def select_all_info_country(name):
     db_data = db_actions.select_all_country(name)
     info = parse_db_response(db_data)
     return info
+
+@app.route('/countries/<string:language>')
+def select_all_country_by_languuage(language):
+    all_info_countries = db_actions.select_all_country_language(language)
+    all_countries = []
+    response = None
+    for values in all_info_countries:
+        values_country = values[0].replace("'", "''")
+        countries = db_actions.select_all_country(values_country)
+        info_all = parse_db_response(countries)
+        all_countries.append(info_all)
+    response = json.dumps(all_countries)
+    return response
+
+@app.route('/countries/<string:params>, <string:population>')
+def select_all_country_by_population(params,population):
+    all_info_countries = db_actions.select_all_country_population(params, population)
+    all_countries = []
+    response = None
+    for values in all_info_countries:
+        values_country = values[0].replace("'", "''")
+        countries = db_actions.select_all_country(values_country)
+        info_all = parse_db_response(countries)
+        all_countries.append(info_all)
+    response = json.dumps(all_countries)
+    return response
+
+
+@app.route('/countries/<string:symbol>')
+def select_all_country_with_starts(symbol):
+    all_info_countries = db_actions.select_all_country_which_starts(symbol)
+    all_countries = []
+    response = None
+    for values in all_info_countries:
+        values_country = values[0].replace("'", "''")
+        countries = db_actions.select_all_country(values_country)
+        info_all = parse_db_response(countries)
+        all_countries.append(info_all)
+    response = json.dumps(all_countries)
+    return response
+print(select_all_country_with_starts("Y"))

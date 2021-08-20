@@ -2,14 +2,14 @@ from os import path
 import sys
 sys.path.append('../project')
 import sqlite3
-import project.db_conection
-from project.country_data import CountryData
+import db_conection
+from country_data import CountryData
 
 
 class DB_actions():
 
     def __init__(self):
-        self.connection = project.db_conection.DB_Conector()
+        self.connection = db_conection.DB_Conector()
 
     def select_data(self, table, query_params):
         connection = self.connection.create_connection()
@@ -69,3 +69,29 @@ class DB_actions():
         res = connection.cursor().execute(
             f"SELECT name_country FROM country").fetchall()
         return res
+
+    def select_all_country_language(self, language):
+        connection = self.connection.create_connection()
+        table = "country"
+        table2 = "language"
+        select_param = f" name_country"
+        result = connection.cursor().execute(
+            f"SELECT {select_param} FROM {table} INNER JOIN {table2} ON {table2}.id_country = {table}.id_country \
+                                 WHERE {table2}.languages = '{language}';").fetchall()
+        return result
+
+    def select_all_country_population(self, params, population):
+        connection = self.connection.create_connection()
+        table = "country"
+        select_param = f" name_country"
+        result = connection.cursor().execute(
+            f"SELECT {select_param} FROM {table} WHERE population {params} '{population}';").fetchall()
+        return result
+    
+    def select_all_country_which_starts(self, symbol):
+        connection = self.connection.create_connection()
+        table = "country"
+        select_param = f" name_country"
+        result = connection.cursor().execute(
+            f"SELECT {select_param} FROM {table} WHERE name_country like '{symbol}%';").fetchall()
+        return result
