@@ -103,9 +103,9 @@ def select_all_country_by_languuage(language):
     response = json.dumps(all_countries)
     return response
 
-@app.route('/countries/<string:params>, <string:population>')
-def select_all_country_by_population(params,population):
-    all_info_countries = db_actions.select_all_country_population(params, population)
+@app.route('/countries/<string:population>')
+def select_all_country_by_population(population):
+    all_info_countries = db_actions.select_all_country_population(population)
     all_countries = []
     response = None
     for values in all_info_countries:
@@ -119,14 +119,14 @@ def select_all_country_by_population(params,population):
 
 @app.route('/countries/<string:symbol>')
 def select_all_country_with_starts(symbol):
-    all_info_countries = db_actions.select_all_country_which_starts(symbol)
+    all_info_countries = db_actions.select_all_country_info()
     all_countries = []
     response = None
     for values in all_info_countries:
         values_country = values[0].replace("'", "''")
-        countries = db_actions.select_all_country(values_country)
-        info_all = parse_db_response(countries)
-        all_countries.append(info_all)
+        if values_country[0] == symbol:
+            countries = db_actions.select_all_country(values_country)
+            info_all = parse_db_response(countries)
+            all_countries.append(info_all)
     response = json.dumps(all_countries)
     return response
-print(select_all_country_with_starts("Y"))
