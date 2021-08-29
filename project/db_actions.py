@@ -80,11 +80,18 @@ class DB_actions():
                                  WHERE {table2}.languages = '{language}';").fetchall()
         return result
 
-    def select_all_country_population(self, population):
+    def select_all_country_population(self, params, population):
         connection = self.connection.create_connection()
         table = "country"
         select_param = f" name_country"
         result = connection.cursor().execute(
-            f"SELECT {select_param} FROM {table} WHERE population > '{population}';").fetchall()
+            f"SELECT {select_param} FROM {table} WHERE population {params} '{population}';").fetchall()
         return result
-    
+
+    def select_all_country_which_starts(self, symbol):
+        connection = self.connection.create_connection()
+        table = "country"
+        select_param = f" name_country"
+        result = connection.cursor().execute(
+            f"SELECT {select_param} FROM {table} WHERE name_country like '{symbol}%';").fetchall()
+        return result 

@@ -119,7 +119,7 @@ def select_all_country_by_population(population):
 
 @app.route('/countries/<string:symbol>')
 def select_all_country_with_starts(symbol):
-    all_info_countries = db_actions.select_all_country_info()
+    all_info_countries = db_actions.select_all_country_which_starts()
     all_countries = []
     response = None
     for values in all_info_countries:
@@ -130,3 +130,5 @@ def select_all_country_with_starts(symbol):
             all_countries.append(info_all)
     response = json.dumps(all_countries)
     return response
+
+print(select_all_country_by_population(10000000))
