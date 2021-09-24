@@ -130,3 +130,4 @@ def select_all_country_with_starts(symbol):
             all_countries.append(info_all)
     response = json.dumps(all_countries)
     return response
+select_all_country_with_starts("A")
